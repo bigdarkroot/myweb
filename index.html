@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日田公司宣传官网</title>
+  <style>
+    /* ========== 全局样式重置 & 基础设置 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      list-style: none;
+      text-decoration: none;
+    }
+
+    body {
+      font-family: "Microsoft Yahei", Arial, sans-serif;
+      color: #333;
+      line-height: 1.8;
+      background-color: #f8fafc;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* 通用板块内边距 */
+    .section {
+      padding: 80px 0;
+    }
+
+    /* 板块标题通用样式 */
+    .title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .title h2 {
+      font-size: 32px;
+      color: #0052cc;
+      margin-bottom: 12px;
+    }
+
+    .title p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    /* ========== 顶部导航栏 ========== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      z-index: 999;
+      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(200, 220, 255, 0.85));
+      box-shadow: 0 2px 8px rgba(0, 80, 200, 0.1);
+      transition: all 0.4s ease;
+    }
+
+    header.nav-scroll {
+      background: linear-gradient(135deg, #ffffff, #e6f0ff);
+      box-shadow: 0 3px 15px rgba(0, 70, 180, 0.15);
+      height: 65px;
+    }
+
+    .nav-wrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0052cc;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .nav-list {
+      display: flex;
+    }
+
+    .nav-list > li {
+      position: relative;
+      padding: 0 20px;
+      height: 70px;
+      line-height: 70px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #222;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    header.nav-scroll .nav-list > li {
+      height: 65px;
+      line-height: 65px;
+    }
+
+    .nav-list > li:hover {
+      color: #0052cc;
+    }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 160px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .nav-list > li:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown li {
+      padding: 12px 20px;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .dropdown li:hover {
+      background: linear-gradient(90deg, #e6f0ff, #f0f7ff);
+      color: #0052cc;
+    }
+
+    /* ========== 首页全屏轮播图 ========== */
+    .banner {
+      width: 100%;
+      height: 600px;
+      position: relative;
+      margin-top: 70px;
+      overflow: hidden;
+    }
+
+    header.nav-scroll + .banner {
+      margin-top: 65px;
+    }
+
+    .banner-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .banner-item.active {
+      opacity: 1;
+    }
+
+    .banner-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .banner-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      text-align: center;
+      line-height: 50px;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .banner-btn:hover {
+      background: rgba(0, 82, 204, 0.7);
+    }
+
+    .prev {
+      left: 30px;
+    }
+
+    .next {
+      right: 30px;
+    }
+
+    /* ========== 公司简介 - 单条竖向排列 + 左图右文 ========== */
+    .about {
+      background: #fff;
+    }
+    /* 外层列表：垂直排列，条目之间间距 */
+    .about-list {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+    /* 单个公司条目：内部左图右文 */
+    .about-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      background: #f8fbff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 80, 200, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      padding: 30px;
+    }
+    .about-item:hover {
+      transform: translateY(-6px);
+    }
+    /* 左侧图片区域 */
+    .about-img {
+      flex: 1;
+    }
+    .about-img img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    /* 右侧文字区域 */
+    .about-text-box {
+      flex: 1;
+    }
+    .about-text-box h3 {
+      font-size: 24px;
+      color: #0052cc;
+      margin-bottom: 20px;
+      border-left: 4px solid #0052cc;
+      padding-left: 15px;
+    }
+    .about-text-box p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 5px;
+      text-indent: 2em;
+      text-align: justify;
+    }
+
+    /* ========== 企业核心优势 - 四项布局 ========== */
+    .advantage {
+      background: #f8fafc;
+    }
+    .advantage-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: space-between;
+    }
+    .advantage-item {
+      flex: 1;
+      min-width: 220px;
+      padding: 35px 25px;
+      text-align: center;
+      background: linear-gradient(135deg, #a8caf6, #eef5ff);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 80, 200, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .advantage-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(0, 80, 200, 0.15);
+    }
+    .advantage-item h3 {
+      font-size: 20px;
+      color: #222;
+      margin: 20px 0 15px;
+    }
+    .advantage-item p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    /* ========== 产品轮播样式（无缝循环 + 触摸滑动） ========== */
+    .product {
+      background: #fff;
+    }
+    .product-block {
+      margin-bottom: 80px;
+    }
+    .product-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .product-swiper {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      touch-action: pan-y;
+    }
+
+    .swiper-wrap {
+      display: flex;
+      height: 100%;
+      transition: transform 0.6s ease;
+    }
+
+    .swiper-item {
+      flex: 0 0 24%;
+      height: 100%;
+      padding: 0 8px;
+      cursor: pointer;
+    }
+
+    .swiper-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .swiper-item img:hover {
+      transform: scale(1.03);
+    }
+
+    .swiper-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      line-height: 45px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s ease;
+    }
+    .swiper-btn:hover {
+      background: #0052cc;
+    }
+    .swiper-prev {
+      left: 20px;
+    }
+    .swiper-next {
+      right: 20px;
+    }
+
+    /* ========== 大图预览弹窗 ========== */
+    .img-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .img-modal.show {
+      display: flex;
+    }
+    .modal-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .modal-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* ========== 联系我们板块 ========== */
+    .contact {
+      background: linear-gradient(135deg, #f0f7ff, #e6f0ff);
+    }
+    .contact-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .contact-item {
+      min-width: 220px;
+    }
+    .contact-item h4 {
+      font-size: 20px;
+      color: #0052cc;
+      margin-bottom: 15px;
+    }
+    .contact-item p {
+      font-size: 16px;
+      color: #444;
+      line-height: 2;
+    }
+
+    /* ========== 底部栏 ========== */
+    footer {
+      padding: 40px 0 20px;
+      background: linear-gradient(135deg, #0052cc, #003d99);
+      color: #fff;
+      text-align: center;
+    }
+    .footer-link {
+      margin: 20px 0;
+    }
+    .footer-link a {
+      margin: 0 15px;
+      font-size: 15px;
+      opacity: 0.9;
+    }
+    .footer-link a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .copyright {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* ========== 移动端适配 ========== */
+    @media (max-width: 768px) {
+      header {
+        height: 55px;
+      }
+      header.nav-scroll {
+        height: 50px;
+      }
+      .logo {
+        font-size: 16px;
+      }
+      .nav-list > li {
+        padding: 0 6px;
+        font-size: 12px;
+        height: 55px;
+        line-height: 55px;
+      }
+      header.nav-scroll .nav-list > li {
+        height: 50px;
+        line-height: 50px;
+      }
+
+      .banner {
+        height: 400px;
+        margin-top: 55px;
+      }
+      header.nav-scroll + .banner {
+        margin-top: 50px;
+      }
+      .title h2 {
+        font-size: 26px;
+      }
+      .section {
+        padding: 50px 0;
+      }
+
+      /* 公司简介移动端：改为上图下文 */
+      .about-item {
+        flex-direction: column;
+        padding: 20px;
+        gap: 25px;
+      }
+      .about-img img {
+        height: 220px;
+      }
+      .about-text-box h3 {
+        font-size: 20px;
+      }
+
+      .product-swiper {
+        height: 200px;
+      }
+      /* 移动端每页2张图 */
+      .swiper-item {
+        flex: 0 0 48%;
+      }
+      .modal-close {
+        font-size: 30px;
+        top: 15px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header id="nav">
+    <div class="container nav-wrap">
+      <a href="#banner" class="logo">日田</a>
+      <ul class="nav-list">
+        <li><a href="#banner">首页</a></li>
+        <li>
+          关于我们
+          <ul class="dropdown">
+            <li><a href="#about">公司简介</a></li>
+          </ul>
+        </li>
+        <li><a href="#advantage">企业优势</a></li>
+        <li>
+          产品展示
+          <ul class="dropdown">
+            <li><a href="#acrylic">亚克力产品</a></li>
+            <li><a href="#plastic">塑胶产品</a></li>
+          </ul>
+        </li>
+        <li><a href="#contact">联系我们</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 首页轮播图 -->
+  <div class="banner" id="banner">
+    <div class="banner-item active">
+      <img src="\myweb\image\pixnio-4000x6000.jpg" alt="轮播图1">
+    </div>
+    <div class="banner-item">
+      <img src="\myweb\image\pixnio-4000x6000.jpg" alt="轮播图2">
+    </div>
+    <div class="banner-item">
+      <img src="\myweb\image\pixnio-4000x6000.jpg" alt="轮播图3">
+    </div>
+    <div class="banner-btn prev">&lt;</div>
+    <div class="banner-btn next">&gt;</div>
+  </div>
+
+  <!-- 公司简介：三家公司 竖向排列 + 单条左图右文 -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="title">
+        <h2>公司简介</h2>
+        <p>以诚待客、以质求胜</p>
+      </div>
+      <div class="about-list">
+        <!-- 第一家公司：左图 右文字 -->
+        <div class="about-item">
+          <div class="about-img">
+            <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力制品分公司">
+          </div>
+          <div class="about-text-box">
+            <h3>深圳日田工艺制品有限公司</h3>
+            <p>  深圳日田工艺制品发展始于 2008 年，最初以亚克力工艺制品为核心业务，2010 年 9 月 5 日正式注册成立深圳日田工艺制品有限公司，注册资本 100 万元，法定代表人柯贤兵。
+              公司选址深圳市龙岗区园山街道，凭借珠三
+              角制造业集群优势，迅速建立起完整的亚克力生产体系。
+            <p>  深圳日田专注于有机玻璃（亚克力）制品、木制工艺品和塑胶制品的研发与生产，
+              拥有热弯、丝印、移印、抛光、激光雕刻、切割等全套先进生产设备与技术，所有工艺均自行完成，确保产品质量与交付效率。其核心产品包括：产品展示架、灯箱、LED 平板灯、
+              展示道具、亚克力面板、水晶工艺品、奖杯奖牌、经销授权牌、水晶相架、台历架、酒水餐牌、陈列柜等数十类，广泛应用于广告、礼品、家居、商超等行业。</p>
+             <p>    凭借 "以诚待客、以质求胜" 的经营理念，深圳日田在行业内树立了良好口碑，2026 年入围 1688 必找工厂榜，回头率达 45%，好评率高达 99.5%，积累了 1400 + 忠实粉丝
+              客户。公司坚持自主创新，不断改进工艺水平，其生产技术和实力在深圳同行业中占据重要地位，成为亚克力工艺制品领域的标杆企业之一。</p>
+            </p>
+          </div>
+        </div>
+
+        <!-- 第二家公司：左图 右文字 -->
+        <div class="about-item">
+          <div class="about-img">
+            <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶制品分公司">
+          </div>
+          <div class="about-text-box">
+            <h3>惠州日田塑胶制品有限公司</h3>
+            <p>  随着业务规模扩大和市场需求多元化，2018 年 9 月 25 日成立惠州日田塑胶制品有限公司，进一步拓展塑胶与五金制品业务板块。公司
+位于惠州市惠阳区新圩产径全昌村，专注于塑胶制品、五金制品的研发、加工与生产，同时涉足半导体器件专用设备制造、汽车零部件及
+配件制造等高端领域。</p>
+            <p>  惠州日田建立了从产品设计、模具开发、注塑成型到喷油丝印的一站式服务体系，为客户提供定制化解决方案。其产品涵盖塑胶外壳、精
+密塑胶组件、五金配件、半导体专用设备零部件、汽车内饰件等，广泛应用于电子、家电、汽车、新能源等行业。公司引进先进的注塑自
+动化设备，提升生产效率与产品精度，满足客户对高品质、高一致性产品的需求。</p>
+             <p>  
+              惠州日田的成立标志着日田集团从单一工艺制品向精密制造领域的战略拓展，为集团后续进入新材料领域奠定了坚实的制造基础和技术储备。
+             </p>
+          </div>
+        </div>
+
+        <!-- 第三家公司：左图 右文字 -->
+        <div class="about-item">
+          <div class="about-img">
+            <img src="\myweb\image\pixnio-4000x6000.jpg" alt="销售服务总公司">
+          </div>
+          <div class="about-text-box">
+            <h3>东莞日田新材料科技有限公司</h3>
+            <p>  为响应国家 "双碳" 战略和制造业转型升级需求，于 2023 年成立东莞日田新材料科技有限公司，公司位于制造业重镇东莞市，专注于新
+材料技术研发与推广，重点发展电商领域。</p>
+            <p>  东莞日田依托集团多年的材料应用经验和技术积累，致力于开发自主设计，迎接谷子经济潮玩经济，除了自己研发设计之外承接个性定制
+服务与出口贸易业务。正在推进工厂转型工贸一体。作为集团的创新引擎，东莞日田注重技术创新与知识产权保护，已拥有 2 条商标信息，积极开展货物进出口和技术进出口业务，推动集团国际化发展。</p>
+<p>  如今，日田集团的三家公司形成了互补协同的产业布局：深圳日田专注于亚克力工艺制品的创意设计与生产，惠州日田负责塑胶五金制品
+的精密制造，东莞日田则聚焦网络营销与兴趣电商，共同构建了从研发到终端产品销售的完整产业链。
+</p>
+<p>  团始终坚持技术创新与品质至上，拥有专业的研发团队和先进的生产设备，能够为客户提供从产品设计、材料选择到生产制造的一站式
+解决方案。产品不仅畅销国内市场，还通过进出口业务远销海外，服务于广告、家居、电子、汽车、新能源等多个行业的知名企业。
+未来，日田集团将继续秉承 "创新驱动、品质为本" 的发展理念，以东莞日田为核心推动新材料技术研发，以深圳日田和惠州日田为基</p>
+<p>  未来，日田集团将继续秉承 "创新驱动、品质为本" 的发展理念，以东莞日田为核心推动新材料技术研发，以深圳日田和惠州日田为基础
+拓展高端工艺制品与精密制造业务，致力于成为国内领先的工艺制品与新材料综合解决方案提供商，为制造业高质量发展贡献力量。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 企业核心优势 -->
+  <section class="advantage section" id="advantage">
+    <div class="container">
+      <div class="title">
+        <h2>企业核心优势</h2>
+        <p>为什么选择我们？</p>
+        <p>因为我们有多年的亚克力和塑胶制造的经验，有新鲜血液的设计团队和电商团队。</p>
+      </div>
+      <div class="advantage-list">
+        <div class="advantage-item">
+          <h3>Excellent quality</h3>
+          <p>深耕行业多年，品质值得信赖。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Complete in specifications</h3>
+          <p>我们可定制生产各类您所需板材，是资质齐全的专业加工生产供应商。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Positive response</h3>
+          <p>我们将随时及时回复您的咨询 / 询盘。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Fast delivery</h3>
+          <p>我们将在约定时限内准时交货。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心产品：无缝循环轮播 + 移动端滑动 -->
+  <section class="product section" id="product">
+    <div class="container">
+      <!-- 亚克力产品 -->
+      <div class="product-block" id="acrylic">
+        <div class="title">
+          <h2>亚克力产品展示</h2>
+        </div>
+        <div class="product-swiper" id="acrylicSwiper">
+          <div class="swiper-wrap">
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-6112x6112.jpg">
+              <img src="\myweb\image\pixnio-6112x6112.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-6000x6000.jpg">
+              <img src="\myweb\image\pixnio-6000x6000.jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-7728x5152 (1).jpg">
+              <img src="\myweb\image\pixnio-7728x5152 (1).jpg" alt="亚克力产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-7728x5152.jpg.jpg">
+              <img src="\myweb\image\pixnio-7728x5152.jpg" alt="亚克力产品">
+            </div>
+          </div>
+          <div class="swiper-btn swiper-prev acrylic-prev">&lt;</div>
+          <div class="swiper-btn swiper-next acrylic-next">&gt;</div>
+        </div>
+      </div>
+
+      <!-- 塑胶产品 -->
+      <div class="product-block" id="plastic">
+        <div class="title">
+          <h2>塑胶产品展示</h2>
+        </div>
+        <div class="product-swiper" id="plasticSwiper">
+          <div class="swiper-wrap">
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+            <div class="swiper-item" data-img="\myweb\image\pixnio-4000x6000.jpg">
+              <img src="\myweb\image\pixnio-4000x6000.jpg" alt="塑胶产品">
+            </div>
+          </div>
+          <div class="swiper-btn swiper-prev plastic-prev">&lt;</div>
+          <div class="swiper-btn swiper-next plastic-next">&gt;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 大图预览弹窗 -->
+  <div class="img-modal" id="imgModal">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <img src="" alt="大图预览" class="modal-img" id="modalImg">
+  </div>
+
+  <!-- 联系我们板块 -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <div class="title">
+        <h2>联系我们</h2>
+        <p>欢迎咨询合作，期待与您携手共赢</p>
+      </div>
+      <div class="contact-wrap">
+        <div class="contact-item">
+          <h4>公司地址</h4>
+          <p>深圳日田工艺制品有限公司：深圳市龙岗区园山街道安良社区安华路53号A栋301</p>
+          <p>惠州日田塑胶制品有限公司：惠州市惠阳区新圩产径全昌村(厂房C)</p>
+          <p>东莞日田新材料科技有限公司：广东省东莞市凤岗镇京东路1号1号楼2403室</p>
+        </div>
+        <div class="contact-item">
+          <h4>联系电话</h4>
+          <p>012-34567890</p>
+          <p>138-0000-0000</p>
+        </div>
+        <div class="contact-item">
+          <h4>电子邮箱</h4>
+          <p>keyahui_camille@163.com</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部栏 -->
+  <footer>
+    <div class="container">
+      <div class="footer-link">
+        <a href="https://szrtgy.1688.com/" target="_blank" rel="noopener noreferrer">1688店铺</a>
+        <a href="https://shop225140961.taobao.com/shop/view_shop.htm?appUid=RAzN8HWKVEc8duyQFFsbSAoVeHzk8ssUHiwEbiiLJraMwzUMJ3B&spm=a21n57.1.hoverItem.3" target="_blank" rel="noopener noreferrer">淘宝店铺</a>
+        <a href="https://www.xiaohongshu.com/user/profile/65f3cbc0000000000500dd0a" target="_blank" rel="noopener noreferrer">小红书店铺</a>
+      </div>
+      <p class="copyright">Copyright ©  Shenzhen Ritian Craft Products Co., Ltd. 版权所有</p>
+    </div>
+  </footer>
+
+  <script>
+  // ====================== 全部修复版 JS ======================
+// 1. 导航栏滚动
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('nav-scroll', window.scrollY > 50);
+});
+
+// 2. 锚点跳转
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const tar = document.querySelector(link.getAttribute('href'));
+    if (tar) {
+      e.preventDefault();
+      window.scrollTo({ top: tar.offsetTop - 70, behavior: 'smooth' });
+    }
+  });
+});
+
+// 3. 首页轮播 —— 修复：正常自动播放！！
+const banner = document.getElementById('banner');
+const bannerItems = banner.querySelectorAll('.banner-item');
+const bannerPrev = banner.querySelector('.prev');
+const bannerNext = banner.querySelector('.next');
+let bIdx = 0;
+
+function showBanner(idx) {
+  bannerItems.forEach(it => it.classList.remove('active'));
+  bannerItems[idx].classList.add('active');
+}
+
+function nextBanner() {
+  bIdx = (bIdx + 1) % bannerItems.length;
+  showBanner(bIdx);
+}
+
+function prevBanner() {
+  bIdx = (bIdx - 1 + bannerItems.length) % bannerItems.length;
+  showBanner(bIdx);
+}
+
+// 自动播放（必动）
+let bannerTimer = setInterval(nextBanner, 3000);
+bannerNext.onclick = () => { clearInterval(bannerTimer); nextBanner(); bannerTimer = setInterval(nextBanner, 3000); };
+bannerPrev.onclick = () => { clearInterval(bannerTimer); prevBanner(); bannerTimer = setInterval(nextBanner, 3000); };
+banner.onmouseenter = () => clearInterval(bannerTimer);
+banner.onmouseleave = () => bannerTimer = setInterval(nextBanner, 3000);
+
+// 4. 产品轮播 —— 无BUG、无限循环、4张单张切换
+function initSwiper(swiperId, prevClass, nextClass) {
+  const s = document.getElementById(swiperId);
+  const wrap = s.querySelector('.swiper-wrap');
+  const items = s.querySelectorAll('.swiper-item');
+  const prevBtn = s.querySelector('.' + prevClass);
+  const nextBtn = s.querySelector('.' + nextClass);
+
+  let idx = 0;
+  const w = items[0].offsetWidth;
+  const len = items.length;
+  const show = 4;
+
+  function move() {
+    wrap.style.transition = 'transform 0.5s ease';
+    wrap.style.transform = `translateX(-${idx * w}px)`;
+  }
+
+  function next() {
+    idx++;
+    if (idx > len - show) idx = 0;
+    move();
+  }
+
+  function prev() {
+    idx--;
+    if (idx < 0) idx = len - show;
+    move();
+  }
+
+  let timer = setInterval(next, 3000);
+  nextBtn.onclick = () => { clearInterval(timer); next(); timer = setInterval(next, 3000); };
+  prevBtn.onclick = () => { clearInterval(timer); prev(); timer = setInterval(next, 3000); };
+  s.onmouseenter = () => clearInterval(timer);
+  s.onmouseleave = () => timer = setInterval(next, 3000);
+
+  let startX = 0;
+  s.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  s.addEventListener('touchend', e => {
+    const d = e.changedTouches[0].clientX - startX;
+    if (d > 50) prev();
+    if (d < -50) next();
+  });
+}
+
+// 5. 图片点击放大 —— 正常可用
+function initModal() {
+  const modal = document.getElementById('imgModal');
+  const mImg = document.getElementById('modalImg');
+  const close = document.getElementById('modalClose');
+
+  document.querySelectorAll('.swiper-item').forEach(item => {
+    item.onclick = () => {
+      mImg.src = item.dataset.img || item.querySelector('img').src;
+      modal.classList.add('show');
+    };
+  });
+
+  close.onclick = () => modal.classList.remove('show');
+  modal.onclick = e => e.target === modal && modal.classList.remove('show');
+}
+
+// 初始化全部
+initSwiper('acrylicSwiper', 'acrylic-prev', 'acrylic-next');
+initSwiper('plasticSwiper', 'plastic-prev', 'plastic-next');
+initModal();
+  </script>
+</body>
+</html>
