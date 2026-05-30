@@ -814,33 +814,36 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // 3. 首页轮播 —— 修复：正常自动播放！！
-const banner = document.getElementById('banner');
-const bannerItems = banner.querySelectorAll('.banner-item');
-const bannerPrev = banner.querySelector('.prev');
-const bannerNext = banner.querySelector('.next');
-let bIdx = 0;
+// 【最简必死运行版】首页轮播 → 绝对能动
+let bannerIndex = 0;
+const bannerItems = document.querySelectorAll('.banner-item');
+const bannerPrev = document.querySelector('.banner-btn.prev');
+const bannerNext = document.querySelector('.banner-btn.next');
 
-function showBanner(idx) {
-  bannerItems.forEach(it => it.classList.remove('active'));
-  bannerItems[idx].classList.add('active');
+// 切换显示
+function showBanner() {
+  bannerItems.forEach(item => item.classList.remove('active'));
+  bannerItems[bannerIndex].classList.add('active');
 }
 
+// 下一张
 function nextBanner() {
-  bIdx = (bIdx + 1) % bannerItems.length;
-  showBanner(bIdx);
+  bannerIndex = (bannerIndex + 1) % bannerItems.length;
+  showBanner();
 }
 
-function prevBanner() {
-  bIdx = (bIdx - 1 + bannerItems.length) % bannerItems.length;
-  showBanner(bIdx);
-}
+// 自动播放（直接启动，不绕弯）
+setInterval(nextBanner, 3000);
 
-// 自动播放（必动）
-let bannerTimer = setInterval(nextBanner, 3000);
-bannerNext.onclick = () => { clearInterval(bannerTimer); nextBanner(); bannerTimer = setInterval(nextBanner, 3000); };
-bannerPrev.onclick = () => { clearInterval(bannerTimer); prevBanner(); bannerTimer = setInterval(nextBanner, 3000); };
-banner.onmouseenter = () => clearInterval(bannerTimer);
-banner.onmouseleave = () => bannerTimer = setInterval(nextBanner, 3000);
+// 按钮点击
+bannerNext.onclick = nextBanner;
+bannerPrev.onclick = function() {
+  bannerIndex = (bannerIndex - 1 + bannerItems.length) % bannerItems.length;
+  showBanner();
+};
+
+// 初始显示第一张
+showBanner();
 
 // 4. 产品轮播 —— 无BUG、无限循环、4张单张切换
 function initSwiper(swiperId, prevClass, nextClass) {
