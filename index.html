@@ -891,59 +891,57 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // 3. 首页轮播
-// 3. 首页轮播（修复版）
 const banner = document.getElementById('banner');
 const bannerItems = banner.querySelectorAll('.banner-item');
 const bannerPrev = banner.querySelector('.prev');
 const bannerNext = banner.querySelector('.next');
 let bIdx = 0;
 let bannerTimer = null;
-let isAnimating = false; // 标记动画是否进行中
+const AUTO_DELAY = 3000; // 自动切换间隔（3秒）
+const ANIM_TIME = 1000;  // 动画时长（与CSS的1s transition一致）
 
-function showBanner(idx) {
-  if (isAnimating) return; // 动画中禁止切换
-  isAnimating = true;
+// 切换轮播图（核心函数：切换前必清定时器）
+function switchBanner(dir) {
+  clearTimeout(bannerTimer); // 关键：每次切换前清除旧定时器
+  
+  // 更新索引
+  if (dir === 'next') {
+    bIdx = (bIdx + 1) % bannerItems.length;
+  } else {
+    bIdx = (bIdx - 1 + bannerItems.length) % bannerItems.length;
+  }
+  
+  // 执行切换
   bannerItems.forEach(it => it.classList.remove('active'));
-  bannerItems[idx].classList.add('active');
-  // 动画完成后解除锁定
-  setTimeout(() => { isAnimating = false; }, 1000); // 匹配 CSS 的 1s 过渡
+  bannerItems[bIdx].classList.add('active');
+  
+  // 动画完成后，重启自动播放（避免冲突）
+  bannerTimer = setTimeout(() => switchBanner('next'), AUTO_DELAY + ANIM_TIME);
 }
 
-function nextBanner() {
-  bIdx = (bIdx + 1) % bannerItems.length;
-  showBanner(bIdx);
-}
+// 初始启动自动播放
+switchBanner('next');
 
-function prevBanner() {
-  bIdx = (bIdx - 1 + bannerItems.length) % bannerItems.length;
-  showBanner(bIdx);
-}
+// 按钮点击
+bannerNext.onclick = () => switchBanner('next');
+bannerPrev.onclick = () => switchBanner('prev');
 
-// 启动自动播放（单次定时器，避免累积）
-function startAutoPlay() {
-  clearTimeout(bannerTimer); // 清除可能存在的旧定时器
-  bannerTimer = setTimeout(() => {
-    nextBanner();
-    startAutoPlay(); // 递归调用，确保每次动画完成后才触发下一次
-  }, 3000);
-}
+// 触摸滑动（修复：滑动时清定时器）
+let startX = 0;
+banner.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+  clearTimeout(bannerTimer); // 滑动开始即暂停自动播放
+});
+banner.addEventListener('touchend', e => {
+  const delta = e.changedTouches[0].clientX - startX;
+  if (delta > 50) switchBanner('prev');  // 右滑上一张
+  if (delta < -50) switchBanner('next'); // 左滑下一张
+  if (Math.abs(delta) <= 50) switchBanner('next'); // 未滑动则恢复自动播放
+});
 
-// 手动切换时暂停并重启
-function handleManualSwitch(fn) {
-  clearTimeout(bannerTimer); // 暂停自动播放
-  fn(); // 执行手动切换
-  setTimeout(startAutoPlay, 1000); // 等待动画完成后再重启自动播放
-}
-
-// 绑定事件
-bannerNext.onclick = () => handleManualSwitch(nextBanner);
-bannerPrev.onclick = () => handleManualSwitch(prevBanner);
-banner.onmouseenter = () => clearTimeout(bannerTimer); // 悬停暂停
-banner.onmouseleave = () => startAutoPlay(); // 离开重启
-
-// 初始化
-startAutoPlay();
-
+// 鼠标悬停暂停
+banner.onmouseenter = () => clearTimeout(bannerTimer);
+banner.onmouseleave = () => switchBanner('next');
 // 4. 产品轮播
 function initSwiper(swiperId, prevClass, nextClass) {
   const s = document.getElementById(swiperId);
