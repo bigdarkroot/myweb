@@ -464,31 +464,66 @@
     }
 
     /* ========== 移动端适配 ========== */
-    @media (max-width: 768px) {
-      header {
-        height: 55px;
-      }
-      header.nav-scroll {
-        height: 50px;
-      }
-      .logo {
-        font-size: 16px;
-      }
-      .nav-list > li {
-        padding: 0 6px;
-        font-size: 12px;
-        height: 55px;
-        line-height: 55px;
-      }
-      header.nav-scroll .nav-list > li {
-        height: 50px;
-        line-height: 50px;
-      }
-
-      .banner {
-        height: 400px;
-        margin-top: 55px;
-      }
+@media (max-width: 768px) {
+  .nav-list .dropdown {
+  display: none; /* 默认收起 */
+  background: #fff;
+  padding-left: 20px;
+  border-top: 1px solid #eee;
+}
+.nav-list .dropdown.active {
+  display: block; /* 展开时显示 */
+}
+   .nav-list {
+    display: none; /* 隐藏默认导航 */
+    position: fixed;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .nav-list.show {
+    display: flex;
+  }
+  .nav-list > li {
+    height: auto;
+    line-height: 40px;
+    padding: 0 20px;
+    border-bottom: 1px solid #eee;
+  }
+  /* 汉堡按钮样式 */
+  .hamburger {
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+  }
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #0052cc;
+    margin: 6px 0;
+    border-radius: 3px;
+  }
+}
+/* PC端隐藏汉堡按钮 */
+.hamburger {
+  display: none;
+}
+  .banner {
+    height: calc(100vw * 0.7); /* 按屏幕宽度比例 */
+    max-height: 400px;
+    min-height: 280px;
+    margin-top: 55px;
+  }
+  header.nav-scroll + .banner {
+    margin-top: 50px;
+  }
+}
       header.nav-scroll + .banner {
         margin-top: 50px;
       }
@@ -524,9 +559,6 @@
         top: 15px;
         right: 20px;
       }
-      .banner {
-  height: 280px;
-}
 .swiper-item {
   flex: 0 0 48%;
 }
@@ -551,10 +583,11 @@
       <ul class="nav-list">
         <li><a href="#banner">首页</a></li>
         <li>
+<li class="dropdown-parent">
   关于我们
   <ul class="dropdown">
     <li><a href="#about">公司简介</a></li>
-    <li><a href="#advantage">企业优势</a></li> <!-- 新增此行 -->
+    <li><a href="#advantage">企业优势</a></li>
   </ul>
 </li>
 <li>
@@ -566,6 +599,11 @@
   </ul>
 </li>
         <li><a href="#contact">联系我们</a></li>
+    <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
       </ul>
     </div>
   </header>
@@ -611,7 +649,6 @@
               展示道具、亚克力面板、水晶工艺品、奖杯奖牌、经销授权牌、水晶相架、台历架、酒水餐牌、陈列柜等数十类，广泛应用于广告、礼品、家居、商超等行业。</p>
              <p>    凭借 "以诚待客、以质求胜" 的经营理念，深圳日田在行业内树立了良好口碑，2026 年入围 1688 必找工厂榜，回头率达 45%，好评率高达 99.5%，积累了 1400 + 忠实粉丝
               客户。公司坚持自主创新，不断改进工艺水平，其生产技术和实力在深圳同行业中占据重要地位，成为亚克力工艺制品领域的标杆企业之一。</p>
-            </p>
           </div>
         </div>
 
@@ -869,6 +906,13 @@
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('nav-scroll', window.scrollY > 50);
+  
+});
+    // 移动端汉堡菜单
+const hamburger = document.getElementById('hamburger');
+const navList = document.getElementById('navList');
+hamburger.addEventListener('click', () => {
+  navList.classList.toggle('show');
 });
     // 首页轮播
 let bannerIndex = 0;
@@ -908,8 +952,8 @@ function initSwiper(swiperId, prevClass, nextClass) {
   const prevBtn = swiper.querySelector('.' + prevClass);
   const nextBtn = swiper.querySelector('.' + nextClass);
   const realLen = items.length;
-const showNum = window.innerWidth <= 768 ? 2 : 4;
-// 监听窗口resize，重新计算
+let showNum = window.innerWidth <= 768 ? 2 : 4;
+let itemW = 0; // 提前声明
 window.addEventListener('resize', () => {
   showNum = window.innerWidth <= 768 ? 2 : 4;
   itemW = items[0].offsetWidth;
@@ -957,23 +1001,23 @@ window.addEventListener('resize', () => {
     }
   }
 
-  function prev() {
-    cur--;
-    if (cur < 0) {
-      wrap.style.transition = "none";
-      cur = realLen - 1;
-      wrap.style.transform = `translateX(-${cur * itemW}px)`;
-      setTimeout(() => {
-        wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
-        cur = realLen - 2;
-        move();
-      }, 20);
-    } else {
+function prev() {
+  cur--;
+  if (cur < 0) {
+    wrap.style.transition = "none";
+    cur = realLen - showNum; // 跳转到最后一页的起始位置
+    wrap.style.transform = `translateX(-${cur * itemW}px)`;
+    setTimeout(() => {
+      wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
+      cur--;
       move();
-    }
+    }, 20);
+  } else {
+    move();
   }
+}
 
-et timer = null;
+let timer = null;
 // 自动播放
 timer = setInterval(next, 3000);
 swiper.onmouseenter = () => timer && clearInterval(timer);
@@ -1007,6 +1051,8 @@ function initZoom() {
   });
 
   close.onclick = () => modal.classList.remove("show");
+  // 阻止图片的冒泡
+  mImg.onclick = (e) => e.stopPropagation();
   modal.onclick = e => e.target === modal && modal.classList.remove("show");
 }
 
@@ -1015,6 +1061,21 @@ initSwiper("acrylicSwiper", "acrylic-prev", "acrylic-next");
 initSwiper("plasticSwiper", "plastic-prev", "plastic-next");
 initSwiper("gumeiSwiper", "gumei-prev", "gumei-next"); 
 initZoom();
+    document.querySelectorAll('.dropdown-parent').forEach(parent => {
+  parent.addEventListener('click', function(e) {
+    // 阻止事件冒泡，避免点击子菜单时误关
+    e.stopPropagation();
+    // 核心：用 toggle 切换 active 类，实现展开/收起
+    this.querySelector('.dropdown').classList.toggle('active');
+  });
+});
+
+// 点击页面其他地方，自动关闭下拉菜单（优化体验）
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown.active').forEach(drop => {
+    drop.classList.remove('active');
+  });
+});
   </script>
 </body>
 </html>
