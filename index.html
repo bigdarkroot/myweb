@@ -149,37 +149,38 @@
     }
 
     /* ========== 首页全屏轮播图 ========== */
-    .banner {
-      width: 100%;
-      height: 600px;
-      position: relative;
-      margin-top: 70px;
-      overflow: hidden;
-    }
+   /* ========== 首页全屏轮播图 ========== */
+.banner {
+  width: 100%;
+  /* 改为自适应高度：基于屏幕宽度比例，同时限制最大/最小高度 */
+  height: calc(100vw * 0.6); 
+  max-height: 600px;
+  min-height: 300px;
+  position: relative;
+  margin-top: 70px;
+  overflow: hidden;
+}
 
-    header.nav-scroll + .banner {
-      margin-top: 65px;
-    }
+.banner-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
 
-    .banner-item {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
+.banner-item.active {
+  opacity: 1;
+}
 
-    .banner-item.active {
-      opacity: 1;
-    }
-
-    .banner-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.banner-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+}
 
     .banner-btn {
       position: absolute;
@@ -311,36 +312,45 @@
       margin-bottom: 0;
     }
 
-    .product-swiper {
-      position: relative;
-      width: 100%;
-      height: 260px;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      touch-action: pan-y;
-    }
+/* ========== 产品轮播样式（无缝循环 + 触摸滑动） ========== */
+.product-swiper {
+  position: relative;
+  width: 100%;
+  /* 产品轮播容器自适应高度 */
+  height: auto;
+  min-height: 180px;
+  max-height: 320px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  touch-action: pan-y;
+}
 
-    .swiper-wrap {
-      display: flex;
-      height: 100%;
-      transition: transform 0.6s ease;
-    }
+.swiper-wrap {
+  display: flex;
+  /* 高度跟随子元素自适应 */
+  height: 100%;
+  transition: transform 0.6s ease;
+}
 
-    .swiper-item {
-      flex: 0 0 24%;
-      height: 100%;
-      padding: 0 8px;
-      cursor: pointer;
-    }
+.swiper-item {
+  flex: 0 0 24%;
+  /* 产品项高度自适应 */
+  height: auto;
+  padding: 0 8px;
+  cursor: pointer;
+}
 
-    .swiper-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-      transition: transform 0.3s ease;
-    }
+.swiper-item img {
+  width: 100%;
+  /* 高度自适应，保持宽高比 */
+  height: auto;
+  /* 强制填满容器，同时保持比例 */
+  aspect-ratio: 4/3; /* 自定义图片比例，可根据实际需求调整 */
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
 
     .swiper-item img:hover {
       transform: scale(1.03);
@@ -514,6 +524,22 @@
         top: 15px;
         right: 20px;
       }
+      .banner {
+  height: 280px !important;
+}
+.swiper-item {
+  flex: 0 0 48% !important;
+}
+.product-swiper {
+  height: auto !important;
+}
+      img {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
     }
   </style>
 </head>
