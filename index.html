@@ -464,18 +464,22 @@
     }
 
     /* ========== 移动端适配 ========== */
+/* ========== 移动端适配 ========== */
 @media (max-width: 768px) {
+  /* 下拉菜单移动端样式 */
   .nav-list .dropdown {
-  display: none; /* 默认收起 */
-  background: #fff;
-  padding-left: 20px;
-  border-top: 1px solid #eee;
-}
-.nav-list .dropdown.active {
-  display: block; /* 展开时显示 */
-}
-   .nav-list {
-    display: none; /* 隐藏默认导航 */
+    display: none;
+    background: #fff;
+    padding-left: 20px;
+    border-top: 1px solid #eee;
+  }
+  .nav-list .dropdown.active {
+    display: block;
+  }
+
+  /* 导航列表移动端 */
+  .nav-list {
+    display: none;
     position: fixed;
     top: 55px;
     left: 0;
@@ -493,6 +497,7 @@
     padding: 0 20px;
     border-bottom: 1px solid #eee;
   }
+
   /* 汉堡按钮样式 */
   .hamburger {
     display: block;
@@ -509,13 +514,10 @@
     margin: 6px 0;
     border-radius: 3px;
   }
-}
-/* PC端隐藏汉堡按钮 */
-.hamburger {
-  display: none;
-}
+
+  /* banner移动端高度 */
   .banner {
-    height: calc(100vw * 0.7); /* 按屏幕宽度比例 */
+    height: calc(100vw * 0.7);
     max-height: 400px;
     min-height: 280px;
     margin-top: 55px;
@@ -523,89 +525,91 @@
   header.nav-scroll + .banner {
     margin-top: 50px;
   }
-}
-      header.nav-scroll + .banner {
-        margin-top: 50px;
-      }
-      .title h2 {
-        font-size: 26px;
-      }
-      .section {
-        padding: 50px 0;
-      }
 
-      /* 公司简介移动端：改为上图下文 */
-      .about-item {
-        flex-direction: column;
-        padding: 20px;
-        gap: 25px;
-      }
-      .about-img img {
-        height: 220px;
-      }
-      .about-text-box h3 {
-        font-size: 20px;
-      }
+  /* 通用标题/板块移动端 */
+  .title h2 {
+    font-size: 26px;
+  }
+  .section {
+    padding: 50px 0;
+  }
 
-      .product-swiper {
-        height: 200px;
-      }
-      /* 移动端每页2张图 */
-      .swiper-item {
-        flex: 0 0 48%;
-      }
-      .modal-close {
-        font-size: 30px;
-        top: 15px;
-        right: 20px;
-      }
-.swiper-item {
-  flex: 0 0 48%;
+  /* 公司简介移动端 */
+  .about-item {
+    flex-direction: column;
+    padding: 20px;
+    gap: 25px;
+  }
+  .about-img img {
+    height: 220px;
+  }
+  .about-text-box h3 {
+    font-size: 20px;
+  }
+
+  /* 产品轮播移动端 */
+  .product-swiper {
+    height: auto;
+  }
+  .swiper-item {
+    flex: 0 0 48%;
+  }
+
+  /* 弹窗关闭按钮移动端 */
+  .modal-close {
+    font-size: 30px;
+    top: 15px;
+    right: 20px;
+  }
+
+  /* 图片渐入动画 */
+  .banner-item img, .swiper-item img {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
 }
-.product-swiper {
-  height: auto;
+
+/* PC端隐藏汉堡按钮（放在媒体查询外） */
+.hamburger {
+  display: none;
 }
-.banner-item img, .swiper-item img {
-  opacity: 0;
-  animation: fadeIn 0.8s ease forwards;
-}
+
+/* 图片渐入动画（全局） */
 @keyframes fadeIn {
   to { opacity: 1; }
 }
-    }
   </style>
 </head>
 <body>
   <!-- 顶部导航栏 -->
   <header id="nav">
-    <div class="container nav-wrap">
-      <a href="#banner" class="logo">日田</a>
-      <ul class="nav-list">
-        <li><a href="#banner">首页</a></li>
-        <li>
-<li class="dropdown-parent">
-  关于我们
-  <ul class="dropdown">
-    <li><a href="#about">公司简介</a></li>
-    <li><a href="#advantage">企业优势</a></li>
+   <div class="container nav-wrap">
+  <a href="#banner" class="logo">日田</a>
+  <ul class="nav-list" id="navList">
+    <li><a href="#banner">首页</a></li>
+    <li class="dropdown-parent">
+      关于我们
+      <ul class="dropdown">
+        <li><a href="#about">公司简介</a></li>
+        <li><a href="#advantage">企业优势</a></li>
+      </ul>
+    </li>
+    <li class="dropdown-parent">
+      产品展示
+      <ul class="dropdown">
+        <li><a href="#acrylic">亚克力产品</a></li>
+        <li><a href="#plastic">塑胶产品</a></li>
+        <li><a href="#gumei">二次元谷美产品</a></li>
+      </ul>
+    </li>
+    <li><a href="#contact">联系我们</a></li>
   </ul>
-</li>
-<li>
-  产品展示
-  <ul class="dropdown">
-    <li><a href="#acrylic">亚克力产品</a></li>
-    <li><a href="#plastic">塑胶产品</a></li>
-    <li><a href="#gumei">二次元谷美产品</a></li> <!-- 新增谷美导航链接 -->
-  </ul>
-</li>
-        <li><a href="#contact">联系我们</a></li>
-    <div class="hamburger" id="hamburger">
+  <div class="hamburger" id="hamburger">
     <span></span>
     <span></span>
     <span></span>
   </div>
-      </ul>
-    </div>
+</div>
   </header>
 
   <!-- 首页轮播图 -->
@@ -952,26 +956,31 @@ function initSwiper(swiperId, prevClass, nextClass) {
   const prevBtn = swiper.querySelector('.' + prevClass);
   const nextBtn = swiper.querySelector('.' + nextClass);
   const realLen = items.length;
-let showNum = window.innerWidth <= 768 ? 2 : 4;
-let itemW = 0; // 提前声明
-window.addEventListener('resize', () => {
-  showNum = window.innerWidth <= 768 ? 2 : 4;
-  itemW = items[0].offsetWidth;
-  move();
-});
+  let showNum = window.innerWidth <= 768 ? 2 : 4;
+  let itemW = items[0]?.offsetWidth || 0; // 初始化获取宽度，兼容空元素
   let cur = 0;
+  let timer = null; // 定时器统一声明
 
-
-  wrap.innerHTML += wrap.innerHTML;
+  // 复制轮播项实现无缝（提前复制，避免重复加载）
+  const originalItems = Array.from(items).map(item => item.outerHTML);
+  wrap.innerHTML += originalItems.join('');
   const allItems = wrap.querySelectorAll('.swiper-item');
 
+  // 窗口resize重新计算
+  window.addEventListener('resize', () => {
+    showNum = window.innerWidth <= 768 ? 2 : 4;
+    itemW = items[0]?.offsetWidth || 0;
+    move();
+  });
+
+  // 轮播移动核心函数（移除itemW重复声明）
   function move() {
-      const itemW = items[0].offsetWidth;
+    if (!itemW) return; // 宽度未获取时不执行
     wrap.style.transform = `translateX(-${cur * itemW}px)`;
     updateStyle();
   }
 
-
+  // 轮播项样式更新
   function updateStyle() {
     allItems.forEach((it, i) => {
       const inView = i >= cur && i < cur + showNum;
@@ -985,6 +994,7 @@ window.addEventListener('resize', () => {
     });
   }
 
+  // 下一页逻辑
   function next() {
     cur++;
     if (cur >= realLen) {
@@ -1000,6 +1010,67 @@ window.addEventListener('resize', () => {
       move();
     }
   }
+
+  // 上一页逻辑
+  function prev() {
+    cur--;
+    if (cur < 0) {
+      wrap.style.transition = "none";
+      cur = realLen - showNum;
+      wrap.style.transform = `translateX(-${cur * itemW}px)`;
+      setTimeout(() => {
+        wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
+        cur--;
+        move();
+      }, 20);
+    } else {
+      move();
+    }
+  }
+
+  // 自动播放（修复定时器叠加）
+  function startAutoPlay() {
+    if (timer) clearInterval(timer); // 先清除旧定时器
+    timer = setInterval(next, 3000);
+  }
+  startAutoPlay(); // 初始化启动
+
+  // 鼠标移入/移出控制播放
+  swiper.onmouseenter = () => clearInterval(timer);
+  swiper.onmouseleave = startAutoPlay;
+
+  // 按钮点击（清除自动播放，避免冲突）
+  nextBtn.onclick = () => {
+    clearInterval(timer);
+    next();
+    startAutoPlay(); // 点击后重新启动自动播放
+  };
+  prevBtn.onclick = () => {
+    clearInterval(timer);
+    prev();
+    startAutoPlay();
+  };
+
+  // 触摸滑动
+  let startX = 0;
+  swiper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+  swiper.addEventListener("touchend", e => {
+    const d = e.changedTouches[0].clientX - startX;
+    if (d > 50) {
+      clearInterval(timer);
+      prev();
+      startAutoPlay();
+    }
+    if (d < -50) {
+      clearInterval(timer);
+      next();
+      startAutoPlay();
+    }
+  });
+
+  // 初始化执行一次移动
+  move();
+}
 
 function prev() {
   cur--;
