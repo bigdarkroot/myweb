@@ -152,8 +152,8 @@
     .banner {
       width: 100%;
       /* 改为自适应高度：基于屏幕宽度比例，同时限制最大/最小高度 */
-      height: calc(100vw * 0.6); 
-      max-height: 600px;
+      height: calc(100vw * 0.5); 
+      max-height: 500px;
       min-height: 300px;
       position: relative;
       margin-top: 70px;
@@ -526,7 +526,7 @@
       }
       /* 移动端每页2张图 */
       .swiper-item {
-        flex: 0 0 48% !important;
+        flex: 0 0 48%;
         /* 移动端产品item仍保持居中 */
         display: flex;
         justify-content: center;
@@ -537,14 +537,11 @@
         top: 15px;
         right: 20px;
       }
-      .banner {
-  height: 280px !important;
-}
 .swiper-item img {
   object-position: center;
 }
 .product-swiper {
-  height: auto !important;
+  height: auto;
 }
     }
     img {
