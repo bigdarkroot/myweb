@@ -149,17 +149,27 @@
     }
 
     /* ========== 首页全屏轮播图 ========== */
-    .banner {
-      width: 100%;
-      /* 改为自适应高度：基于屏幕宽度比例，同时限制最大/最小高度 */
-      height: calc(100vw * 0.5); 
-      max-height: 500px;
-      min-height: 300px;
-      position: relative;
-      z-index: 1;
-      margin-top: 80px !important;
-      overflow: hidden;
-    }
+.banner {
+  width: 100%;
+  height: calc(100vw * 0.5);
+  max-height: 500px;
+  min-height: 300px;
+  position: relative;
+  margin-top: 80px !important;
+  top: 0 !important;
+  z-index: 1;
+
+  overflow: hidden;
+}
+    @media screen and (min-width: 769px) {
+  header#nav + .banner {
+    margin-top: 80px !important;
+  }
+
+  header#nav.nav-scroll + .banner {
+    margin-top: 75px !important;
+  }
+}
 
     .banner-item {
       position: absolute;
