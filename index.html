@@ -533,7 +533,11 @@
       }
 
       .product-swiper {
-        height: 200px;
+ height: auto;
+    width: 100%;
+    display: flex; /* ✅ 关键：启用flex容器 */
+    justify-content: center; /* ✅ 水平居中 */
+    align-items: center; /* ✅ 垂直居中（可选） */
       }
       /* 移动端每页2张图 */
       .swiper-item {
