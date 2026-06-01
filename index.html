@@ -156,6 +156,7 @@
       max-height: 500px;
       min-height: 300px;
       position: relative;
+      z-index: 1;
       margin-top: 70px !important;
       overflow: hidden;
     }
@@ -890,15 +891,22 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // 3. 首页轮播
+// 3. 首页轮播（修复版）
 const banner = document.getElementById('banner');
 const bannerItems = banner.querySelectorAll('.banner-item');
 const bannerPrev = banner.querySelector('.prev');
 const bannerNext = banner.querySelector('.next');
 let bIdx = 0;
+let bannerTimer = null;
+let isAnimating = false; // 标记动画是否进行中
 
 function showBanner(idx) {
+  if (isAnimating) return; // 动画中禁止切换
+  isAnimating = true;
   bannerItems.forEach(it => it.classList.remove('active'));
   bannerItems[idx].classList.add('active');
+  // 动画完成后解除锁定
+  setTimeout(() => { isAnimating = false; }, 1000); // 匹配 CSS 的 1s 过渡
 }
 
 function nextBanner() {
@@ -911,12 +919,30 @@ function prevBanner() {
   showBanner(bIdx);
 }
 
-// 自动播放
-let bannerTimer = setInterval(nextBanner, 3000);
-bannerNext.onclick = () => { clearInterval(bannerTimer); nextBanner(); bannerTimer = setInterval(nextBanner, 3000); };
-bannerPrev.onclick = () => { clearInterval(bannerTimer); prevBanner(); bannerTimer = setInterval(nextBanner, 3000); };
-banner.onmouseenter = () => clearInterval(bannerTimer);
-banner.onmouseleave = () => bannerTimer = setInterval(nextBanner, 3000);
+// 启动自动播放（单次定时器，避免累积）
+function startAutoPlay() {
+  clearTimeout(bannerTimer); // 清除可能存在的旧定时器
+  bannerTimer = setTimeout(() => {
+    nextBanner();
+    startAutoPlay(); // 递归调用，确保每次动画完成后才触发下一次
+  }, 3000);
+}
+
+// 手动切换时暂停并重启
+function handleManualSwitch(fn) {
+  clearTimeout(bannerTimer); // 暂停自动播放
+  fn(); // 执行手动切换
+  setTimeout(startAutoPlay, 1000); // 等待动画完成后再重启自动播放
+}
+
+// 绑定事件
+bannerNext.onclick = () => handleManualSwitch(nextBanner);
+bannerPrev.onclick = () => handleManualSwitch(prevBanner);
+banner.onmouseenter = () => clearTimeout(bannerTimer); // 悬停暂停
+banner.onmouseleave = () => startAutoPlay(); // 离开重启
+
+// 初始化
+startAutoPlay();
 
 // 4. 产品轮播
 function initSwiper(swiperId, prevClass, nextClass) {
