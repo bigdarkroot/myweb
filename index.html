@@ -149,7 +149,7 @@
     }
 
     /* ========== 首页全屏轮播图 ========== */
-   /* ========== 首页全屏轮播图 ========== */
+  /* ========== 首页全屏轮播图 ========== */
 .banner {
   width: 100%;
   /* 改为自适应高度：基于屏幕宽度比例，同时限制最大/最小高度 */
@@ -178,10 +178,11 @@
 .banner-item img {
   width: 100%;
   height: 100%;
+  /* 核心：保持图片比例，裁剪多余部分，始终填满容器 */
   object-fit: cover;
+  /* 可选：图片加载过渡 */
   transition: all 0.5s ease;
 }
-
     .banner-btn {
       position: absolute;
       top: 50%;
@@ -312,7 +313,6 @@
       margin-bottom: 0;
     }
 
-/* ========== 产品轮播样式（无缝循环 + 触摸滑动） ========== */
 .product-swiper {
   position: relative;
   width: 100%;
@@ -363,8 +363,8 @@
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.3);
-      color: #fff;
+      background: rgba(93, 90, 90, 0.3);
+      color: #372e2e;
       font-size: 20px;
       text-align: center;
       line-height: 45px;
@@ -464,117 +464,80 @@
     }
 
     /* ========== 移动端适配 ========== */
-/* ========== 移动端适配 ========== */
-@media (max-width: 768px) {
-  /* 下拉菜单移动端样式 */
-  .nav-list .dropdown {
-    display: none;
-    background: #fff;
-    padding-left: 20px;
-    border-top: 1px solid #eee;
-  }
-  .nav-list .dropdown.active {
-    display: block;
-  }
+    @media (max-width: 768px) {
+      header {
+        height: 55px;
+      }
+      header.nav-scroll {
+        height: 50px;
+      }
+      .logo {
+        font-size: 16px;
+      }
+      .nav-list > li {
+        padding: 0 6px;
+        font-size: 12px;
+        height: 55px;
+        line-height: 55px;
+      }
+      header.nav-scroll .nav-list > li {
+        height: 50px;
+        line-height: 50px;
+      }
 
-  /* 导航列表移动端 */
-  .nav-list {
-    display: none;
-    position: fixed;
-    top: 55px;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    flex-direction: column;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  .nav-list.show {
-    display: flex;
-  }
-  .nav-list > li {
-    height: auto;
-    line-height: 40px;
-    padding: 0 20px;
-    border-bottom: 1px solid #eee;
-  }
+      .banner {
+        height: 400px;
+        margin-top: 55px;
+      }
+      header.nav-scroll + .banner {
+        margin-top: 50px;
+      }
+      .title h2 {
+        font-size: 26px;
+      }
+      .section {
+        padding: 50px 0;
+      }
 
-  /* 汉堡按钮样式 */
-  .hamburger {
-    display: block;
-    width: 30px;
-    height: 30px;
-    position: relative;
-    cursor: pointer;
-  }
-  .hamburger span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: #0052cc;
-    margin: 6px 0;
-    border-radius: 3px;
-  }
+      /* 公司简介移动端：改为上图下文 */
+      .about-item {
+        flex-direction: column;
+        padding: 20px;
+        gap: 25px;
+      }
+      .about-img img {
+        height: 220px;
+      }
+      .about-text-box h3 {
+        font-size: 20px;
+      }
 
-  /* banner移动端高度 */
-  .banner {
-    height: calc(100vw * 0.7);
-    max-height: 400px;
-    min-height: 280px;
-    margin-top: 55px;
-  }
-  header.nav-scroll + .banner {
-    margin-top: 50px;
-  }
-
-  /* 通用标题/板块移动端 */
-  .title h2 {
-    font-size: 26px;
-  }
-  .section {
-    padding: 50px 0;
-  }
-
-  /* 公司简介移动端 */
-  .about-item {
-    flex-direction: column;
-    padding: 20px;
-    gap: 25px;
-  }
-  .about-img img {
-    height: 220px;
-  }
-  .about-text-box h3 {
-    font-size: 20px;
-  }
-
-  /* 产品轮播移动端 */
-  .product-swiper {
-    height: auto;
-  }
-  .swiper-item {
-    flex: 0 0 48%;
-  }
-
-  /* 弹窗关闭按钮移动端 */
-  .modal-close {
-    font-size: 30px;
-    top: 15px;
-    right: 20px;
-  }
-
-  /* 图片渐入动画 */
-  .banner-item img, .swiper-item img {
-    opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
-  }
+      .product-swiper {
+        height: 200px;
+      }
+      /* 移动端每页2张图 */
+      .swiper-item {
+        flex: 0 0 48%;
+      }
+      .modal-close {
+        font-size: 30px;
+        top: 15px;
+        right: 20px;
+      }
+      .banner {
+  height: 280px !important;
 }
-
-/* PC端隐藏汉堡按钮（放在媒体查询外） */
-.hamburger {
-  display: none;
+.swiper-item {
+  flex: 0 0 48% !important;
 }
-
-/* 图片渐入动画（全局） */
+.product-swiper {
+  height: auto !important;
+}
+    }
+    img {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
 @keyframes fadeIn {
   to { opacity: 1; }
 }
@@ -583,33 +546,28 @@
 <body>
   <!-- 顶部导航栏 -->
   <header id="nav">
-   <div class="container nav-wrap">
-  <a href="#banner" class="logo">日田</a>
-  <ul class="nav-list" id="navList">
-    <li><a href="#banner">首页</a></li>
-    <li class="dropdown-parent">
-      关于我们
-      <ul class="dropdown">
-        <li><a href="#about">公司简介</a></li>
-        <li><a href="#advantage">企业优势</a></li>
-      </ul>
-    </li>
-    <li class="dropdown-parent">
-      产品展示
-      <ul class="dropdown">
-        <li><a href="#acrylic">亚克力产品</a></li>
-        <li><a href="#plastic">塑胶产品</a></li>
-        <li><a href="#gumei">二次元谷美产品</a></li>
-      </ul>
-    </li>
-    <li><a href="#contact">联系我们</a></li>
+    <div class="container nav-wrap">
+      <a href="#banner" class="logo">日田</a>
+      <ul class="nav-list">
+        <li><a href="#banner">首页</a></li>
+        <li>
+  关于我们
+  <ul class="dropdown">
+    <li><a href="#about">公司简介</a></li>
+    <li><a href="#advantage">企业优势</a></li> <!-- 新增此行 -->
   </ul>
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
+</li>
+<li>
+  产品展示
+  <ul class="dropdown">
+    <li><a href="#acrylic">亚克力产品</a></li>
+    <li><a href="#plastic">塑胶产品</a></li>
+    <li><a href="#gumei">二次元谷美产品</a></li> <!-- 新增谷美导航链接 -->
+  </ul>
+</li>
+        <li><a href="#contact">联系我们</a></li>
+      </ul>
+    </div>
   </header>
 
   <!-- 首页轮播图 -->
@@ -647,12 +605,13 @@
             <h3>深圳日田工艺制品有限公司</h3>
             <p>  深圳日田工艺制品发展始于 2008 年，最初以亚克力工艺制品为核心业务，2010 年 9 月 5 日正式注册成立深圳日田工艺制品有限公司，注册资本 100 万元，法定代表人柯贤兵。
               公司选址深圳市龙岗区园山街道，凭借珠三
-              角制造业集群优势，迅速建立起完整的亚克力生产体系。</p>
+              角制造业集群优势，迅速建立起完整的亚克力生产体系。
             <p>  深圳日田专注于有机玻璃（亚克力）制品、木制工艺品和塑胶制品的研发与生产，
               拥有热弯、丝印、移印、抛光、激光雕刻、切割等全套先进生产设备与技术，所有工艺均自行完成，确保产品质量与交付效率。其核心产品包括：产品展示架、灯箱、LED 平板灯、
               展示道具、亚克力面板、水晶工艺品、奖杯奖牌、经销授权牌、水晶相架、台历架、酒水餐牌、陈列柜等数十类，广泛应用于广告、礼品、家居、商超等行业。</p>
              <p>    凭借 "以诚待客、以质求胜" 的经营理念，深圳日田在行业内树立了良好口碑，2026 年入围 1688 必找工厂榜，回头率达 45%，好评率高达 99.5%，积累了 1400 + 忠实粉丝
               客户。公司坚持自主创新，不断改进工艺水平，其生产技术和实力在深圳同行业中占据重要地位，成为亚克力工艺制品领域的标杆企业之一。</p>
+            </p>
           </div>
         </div>
 
@@ -788,7 +747,7 @@
         </div>
         <div class="product-swiper" id="plasticSwiper">
           <div class="swiper-wrap">
-            <div class="swiper-item" data-img="/myweb/image/图片25.png">
+           <div class="swiper-item" data-img="/myweb/image/图片25.png">
               <img src="/myweb/image/图片25.png" alt="塑胶产品">
             </div>
             <div class="swiper-item" data-img="/myweb/image/图片26.png">
@@ -815,7 +774,7 @@
   </div>
   <div class="product-swiper" id="gumeiSwiper">
     <div class="swiper-wrap">
-      <div class="swiper-item" data-img="/myweb/image/图片13.png">
+       <div class="swiper-item" data-img="/myweb/image/图片13.png">
         <img src="/myweb/image/图片13.png" alt="二次元谷美产品">
       </div>
       <div class="swiper-item" data-img="/myweb/image/图片14.png">
@@ -851,7 +810,6 @@
       <div class="swiper-item" data-img="/myweb/image/图片24.png">
         <img src="/myweb/image/图片24.png" alt="二次元谷美产品">
       </div>
-      
     </div>
     <div class="swiper-btn swiper-prev gumei-prev">&lt;</div>
     <div class="swiper-btn swiper-next gumei-next">&gt;</div>
@@ -906,247 +864,120 @@
   </footer>
 
   <script>
-    // 导航栏滚动变色
+  // ======================  JS ======================
+// 1. 导航栏滚动
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('nav-scroll', window.scrollY > 50);
-  
 });
-    // 移动端汉堡菜单
-const hamburger = document.getElementById('hamburger');
-const navList = document.getElementById('navList');
-hamburger.addEventListener('click', () => {
-  navList.classList.toggle('show');
-});
-    // 首页轮播
-let bannerIndex = 0;
-const bannerItems = document.querySelectorAll('.banner-item');
-const bannerPrev = document.querySelector('.banner-btn.prev');
-const bannerNext = document.querySelector('.banner-btn.next');
 
-// 切换显示
-function showBanner() {
-  bannerItems.forEach(item => item.classList.remove('active'));
-  bannerItems[bannerIndex].classList.add('active');
+// 2. 锚点跳转
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const tar = document.querySelector(link.getAttribute('href'));
+    if (tar) {
+      e.preventDefault();
+      window.scrollTo({ top: tar.offsetTop - 70, behavior: 'smooth' });
+    }
+  });
+});
+
+// 3. 首页轮播
+const banner = document.getElementById('banner');
+const bannerItems = banner.querySelectorAll('.banner-item');
+const bannerPrev = banner.querySelector('.prev');
+const bannerNext = banner.querySelector('.next');
+let bIdx = 0;
+
+function showBanner(idx) {
+  bannerItems.forEach(it => it.classList.remove('active'));
+  bannerItems[idx].classList.add('active');
 }
 
-// 下一张
 function nextBanner() {
-  bannerIndex = (bannerIndex + 1) % bannerItems.length;
-  showBanner();
+  bIdx = (bIdx + 1) % bannerItems.length;
+  showBanner(bIdx);
 }
 
-// 自动播放（直接启动，不绕弯）
-setInterval(nextBanner, 3000);
-
-// 按钮点击
-bannerNext.onclick = nextBanner;
-bannerPrev.onclick = function() {
-  bannerIndex = (bannerIndex - 1 + bannerItems.length) % bannerItems.length;
-  showBanner();
-};
-
-// 初始显示第一张
-showBanner();
-// 产品轮播
-function initSwiper(swiperId, prevClass, nextClass) {
-  const swiper = document.getElementById(swiperId);
-  const wrap = swiper.querySelector('.swiper-wrap');
-  const items = wrap.querySelectorAll('.swiper-item');
-  const prevBtn = swiper.querySelector('.' + prevClass);
-  const nextBtn = swiper.querySelector('.' + nextClass);
-  const realLen = items.length;
-  let showNum = window.innerWidth <= 768 ? 2 : 4;
-  let itemW = items[0]?.offsetWidth || 0; // 初始化获取宽度，兼容空元素
-  let cur = 0;
-  let timer = null; // 定时器统一声明
-
-  // 复制轮播项实现无缝（提前复制，避免重复加载）
-  const originalItems = Array.from(items).map(item => item.outerHTML);
-  wrap.innerHTML += originalItems.join('');
-  const allItems = wrap.querySelectorAll('.swiper-item');
-
-  // 窗口resize重新计算
-  window.addEventListener('resize', () => {
-    showNum = window.innerWidth <= 768 ? 2 : 4;
-    itemW = items[0]?.offsetWidth || 0;
-    move();
-  });
-
-  // 轮播移动核心函数（移除itemW重复声明）
-  function move() {
-    if (!itemW) return; // 宽度未获取时不执行
-    wrap.style.transform = `translateX(-${cur * itemW}px)`;
-    updateStyle();
-  }
-
-  // 轮播项样式更新
-  function updateStyle() {
-    allItems.forEach((it, i) => {
-      const inView = i >= cur && i < cur + showNum;
-      if (inView) {
-        it.style.transform = "translateZ(40px) scale(1)";
-        it.style.opacity = "1";
-      } else {
-        it.style.transform = "translateZ(0) scale(0.9) rotateY(10deg)";
-        it.style.opacity = "0.7";
-      }
-    });
-  }
-
-  // 下一页逻辑
-  function next() {
-    cur++;
-    if (cur >= realLen) {
-      wrap.style.transition = "none";
-      cur = 0;
-      wrap.style.transform = `translateX(0px)`;
-      setTimeout(() => {
-        wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
-        cur = 1;
-        move();
-      }, 20);
-    } else {
-      move();
-    }
-  }
-
-  // 上一页逻辑
-  function prev() {
-    cur--;
-    if (cur < 0) {
-      wrap.style.transition = "none";
-      cur = realLen - showNum;
-      wrap.style.transform = `translateX(-${cur * itemW}px)`;
-      setTimeout(() => {
-        wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
-        cur--;
-        move();
-      }, 20);
-    } else {
-      move();
-    }
-  }
-
-  // 自动播放（修复定时器叠加）
-  function startAutoPlay() {
-    if (timer) clearInterval(timer); // 先清除旧定时器
-    timer = setInterval(next, 3000);
-  }
-  startAutoPlay(); // 初始化启动
-
-  // 鼠标移入/移出控制播放
-  swiper.onmouseenter = () => clearInterval(timer);
-  swiper.onmouseleave = startAutoPlay;
-
-  // 按钮点击（清除自动播放，避免冲突）
-  nextBtn.onclick = () => {
-    clearInterval(timer);
-    next();
-    startAutoPlay(); // 点击后重新启动自动播放
-  };
-  prevBtn.onclick = () => {
-    clearInterval(timer);
-    prev();
-    startAutoPlay();
-  };
-
-  // 触摸滑动
-  let startX = 0;
-  swiper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-  swiper.addEventListener("touchend", e => {
-    const d = e.changedTouches[0].clientX - startX;
-    if (d > 50) {
-      clearInterval(timer);
-      prev();
-      startAutoPlay();
-    }
-    if (d < -50) {
-      clearInterval(timer);
-      next();
-      startAutoPlay();
-    }
-  });
-
-  // 初始化执行一次移动
-  move();
+function prevBanner() {
+  bIdx = (bIdx - 1 + bannerItems.length) % bannerItems.length;
+  showBanner(bIdx);
 }
 
-function prev() {
-  cur--;
-  if (cur < 0) {
-    wrap.style.transition = "none";
-    cur = realLen - showNum; // 跳转到最后一页的起始位置
-    wrap.style.transform = `translateX(-${cur * itemW}px)`;
-    setTimeout(() => {
-      wrap.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
-      cur--;
-      move();
-    }, 20);
-  } else {
-    move();
-  }
-}
-
-let timer = null;
 // 自动播放
-timer = setInterval(next, 3000);
-swiper.onmouseenter = () => timer && clearInterval(timer);
-swiper.onmouseleave = () => timer = setInterval(next, 3000);
+let bannerTimer = setInterval(nextBanner, 3000);
+bannerNext.onclick = () => { clearInterval(bannerTimer); nextBanner(); bannerTimer = setInterval(nextBanner, 3000); };
+bannerPrev.onclick = () => { clearInterval(bannerTimer); prevBanner(); bannerTimer = setInterval(nextBanner, 3000); };
+banner.onmouseenter = () => clearInterval(bannerTimer);
+banner.onmouseleave = () => bannerTimer = setInterval(nextBanner, 3000);
 
-  nextBtn.onclick = () => { clearInterval(timer); next(); };
-  prevBtn.onclick = () => { clearInterval(timer); prev(); };
+// 4. 产品轮播
+function initSwiper(swiperId, prevClass, nextClass) {
+  const s = document.getElementById(swiperId);
+  const wrap = s.querySelector('.swiper-wrap');
+  const items = s.querySelectorAll('.swiper-item');
+  const prevBtn = s.querySelector('.' + prevClass);
+  const nextBtn = s.querySelector('.' + nextClass);
+
+  let idx = 0;
+  const w = items[0].offsetWidth;
+  const len = items.length;
+  const show = 4;
+
+  function move() {
+    wrap.style.transition = 'transform 0.5s ease';
+    wrap.style.transform = `translateX(-${idx * w}px)`;
+  }
+
+  function next() {
+    idx++;
+    if (idx > len - show) idx = 0;
+    move();
+  }
+
+  function prev() {
+    idx--;
+    if (idx < 0) idx = len - show;
+    move();
+  }
+
+  let timer = setInterval(next, 3000);
+  nextBtn.onclick = () => { clearInterval(timer); next(); timer = setInterval(next, 3000); };
+  prevBtn.onclick = () => { clearInterval(timer); prev(); timer = setInterval(next, 3000); };
+  s.onmouseenter = () => clearInterval(timer);
+  s.onmouseleave = () => timer = setInterval(next, 3000);
 
   let startX = 0;
-  swiper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-  swiper.addEventListener("touchend", e => {
+  s.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  s.addEventListener('touchend', e => {
     const d = e.changedTouches[0].clientX - startX;
     if (d > 50) prev();
     if (d < -50) next();
   });
-
-  move();
 }
 
-// 点击放大
-function initZoom() {
-  const modal = document.getElementById("imgModal");
-  const mImg = document.getElementById("modalImg");
-  const close = document.getElementById("modalClose");
+// 5. 图片点击放大 —— 正常可用
+function initModal() {
+  const modal = document.getElementById('imgModal');
+  const mImg = document.getElementById('modalImg');
+  const close = document.getElementById('modalClose');
 
-  document.querySelectorAll(".swiper-item").forEach(item => {
+  document.querySelectorAll('.swiper-item').forEach(item => {
     item.onclick = () => {
-      mImg.src = item.dataset.img || item.querySelector("img").src;
-      modal.classList.add("show");
+      mImg.src = item.dataset.img || item.querySelector('img').src;
+      modal.classList.add('show');
     };
   });
 
-  close.onclick = () => modal.classList.remove("show");
-  // 阻止图片的冒泡
-  mImg.onclick = (e) => e.stopPropagation();
-  modal.onclick = e => e.target === modal && modal.classList.remove("show");
+  close.onclick = () => modal.classList.remove('show');
+  modal.onclick = e => e.target === modal && modal.classList.remove('show');
 }
 
-// 初始化
+// 初始化全部
 initSwiper("acrylicSwiper", "acrylic-prev", "acrylic-next");
 initSwiper("plasticSwiper", "plastic-prev", "plastic-next");
 initSwiper("gumeiSwiper", "gumei-prev", "gumei-next"); 
-initZoom();
-    document.querySelectorAll('.dropdown-parent').forEach(parent => {
-  parent.addEventListener('click', function(e) {
-    // 阻止事件冒泡，避免点击子菜单时误关
-    e.stopPropagation();
-    // 核心：用 toggle 切换 active 类，实现展开/收起
-    this.querySelector('.dropdown').classList.toggle('active');
-  });
-});
-
-// 点击页面其他地方，自动关闭下拉菜单（优化体验）
-document.addEventListener('click', () => {
-  document.querySelectorAll('.dropdown.active').forEach(drop => {
-    drop.classList.remove('active');
-  });
-});
+initModal();
   </script>
 </body>
 </html>
