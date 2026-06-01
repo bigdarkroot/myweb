@@ -525,15 +525,15 @@
         right: 20px;
       }
       .banner {
-  height: 280px !important;
+  height: 280px;
 }
 .swiper-item {
-  flex: 0 0 48% !important;
+  flex: 0 0 48%;
 }
 .product-swiper {
-  height: auto !important;
+  height: auto;
 }
-      img {
+.banner-item img, .swiper-item img {
   opacity: 0;
   animation: fadeIn 0.8s ease forwards;
 }
@@ -581,7 +581,6 @@
     <div class="banner-item">
       <img src="\myweb\image\3.jpg" alt="轮播图3">
     </div>
-        </div>
     <div class="banner-item">
       <img src="\myweb\image\4.jpg" alt="轮播图4">
     </div>
@@ -606,7 +605,7 @@
             <h3>深圳日田工艺制品有限公司</h3>
             <p>  深圳日田工艺制品发展始于 2008 年，最初以亚克力工艺制品为核心业务，2010 年 9 月 5 日正式注册成立深圳日田工艺制品有限公司，注册资本 100 万元，法定代表人柯贤兵。
               公司选址深圳市龙岗区园山街道，凭借珠三
-              角制造业集群优势，迅速建立起完整的亚克力生产体系。
+              角制造业集群优势，迅速建立起完整的亚克力生产体系。</p>
             <p>  深圳日田专注于有机玻璃（亚克力）制品、木制工艺品和塑胶制品的研发与生产，
               拥有热弯、丝印、移印、抛光、激光雕刻、切割等全套先进生产设备与技术，所有工艺均自行完成，确保产品质量与交付效率。其核心产品包括：产品展示架、灯箱、LED 平板灯、
               展示道具、亚克力面板、水晶工艺品、奖杯奖牌、经销授权牌、水晶相架、台历架、酒水餐牌、陈列柜等数十类，广泛应用于广告、礼品、家居、商超等行业。</p>
@@ -866,6 +865,11 @@
   </footer>
 
   <script>
+    // 导航栏滚动变色
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('nav-scroll', window.scrollY > 50);
+});
     // 首页轮播
 let bannerIndex = 0;
 const bannerItems = document.querySelectorAll('.banner-item');
@@ -903,10 +907,14 @@ function initSwiper(swiperId, prevClass, nextClass) {
   const items = wrap.querySelectorAll('.swiper-item');
   const prevBtn = swiper.querySelector('.' + prevClass);
   const nextBtn = swiper.querySelector('.' + nextClass);
-
-  const itemW = items[0].offsetWidth;
   const realLen = items.length;
-  const showNum = 4;
+const showNum = window.innerWidth <= 768 ? 2 : 4;
+// 监听窗口resize，重新计算
+window.addEventListener('resize', () => {
+  showNum = window.innerWidth <= 768 ? 2 : 4;
+  itemW = items[0].offsetWidth;
+  move();
+});
   let cur = 0;
 
 
@@ -914,6 +922,7 @@ function initSwiper(swiperId, prevClass, nextClass) {
   const allItems = wrap.querySelectorAll('.swiper-item');
 
   function move() {
+      const itemW = items[0].offsetWidth;
     wrap.style.transform = `translateX(-${cur * itemW}px)`;
     updateStyle();
   }
@@ -964,9 +973,11 @@ function initSwiper(swiperId, prevClass, nextClass) {
     }
   }
 
-  let timer = setInterval(next, 3000);
-  swiper.onmouseenter = () => clearInterval(timer);
-  swiper.onmouseleave = () => timer = setInterval(next, 3000);
+et timer = null;
+// 自动播放
+timer = setInterval(next, 3000);
+swiper.onmouseenter = () => timer && clearInterval(timer);
+swiper.onmouseleave = () => timer = setInterval(next, 3000);
 
   nextBtn.onclick = () => { clearInterval(timer); next(); };
   prevBtn.onclick = () => { clearInterval(timer); prev(); };
